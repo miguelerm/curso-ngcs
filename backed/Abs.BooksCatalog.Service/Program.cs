@@ -19,6 +19,12 @@ namespace Abs.BooksCatalog.Service
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                // .ConfigureLogging((host, logging) => {
+                //     // logging.AddConfiguration(host.Configuration.GetSection("Logging"));
+                //     // logging.ClearProviders();
+                //     // logging.AddConsole();
+                // })
+                ;
     }
 }
