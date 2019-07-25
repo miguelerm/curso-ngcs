@@ -13,6 +13,9 @@ dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet tool install --global dotnet-aspnet-codegenerator
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 dotnet aspnet-codegenerator controller -api -async -name BooksController -m Book -dc BooksCatalogContext -namespace Abs.BooksCatalog.Service.Controllers --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
+
+dotnet ef migrations add InitialCreate
+dotnet ef database update
 ```
 
 ## Frontend

@@ -504,3 +504,5 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/windows,aspnetcore,visualstudio
+
+**/*/books.db

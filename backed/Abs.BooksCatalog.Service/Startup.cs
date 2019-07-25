@@ -29,8 +29,8 @@ namespace Abs.BooksCatalog.Service
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<BooksCatalogContext>(options => {
-                options.UseInMemoryDatabase("BooksDb");
-                // options.UseSqlite("Data Source=books.db");
+                //options.UseInMemoryDatabase("BooksDb");
+                options.UseSqlite("Data Source=books.db");
             });
         }
 
