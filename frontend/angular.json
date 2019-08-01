@@ -58,7 +58,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "awesome-bookstore:build",
-            "proxyConfig": "proxy.conf.js"
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

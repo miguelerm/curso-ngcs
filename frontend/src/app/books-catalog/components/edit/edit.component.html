@@ -1,0 +1,42 @@
+<h2>Edit {{ title }}</h2>
+
+<form (submit)="save()">
+  <div>
+    <label for="title">Title:</label>
+    <input id="title" type="text" [(ngModel)]="title" name="title" />
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <textarea
+      name="description"
+      id="description"
+      cols="30"
+      rows="10"
+      [(ngModel)]="description"
+    ></textarea>
+  </div>
+  <div>
+    <label for="publishedOn">Published On:</label>
+    <input
+      type="date"
+      id="publishedOn"
+      name="publishedOn"
+      [(ngModel)]="publishedOn"
+    />
+  </div>
+  <div>
+    <form (submit)="add()">
+      <label for="author">Authors:</label>
+      <input type="text" id="author" name="author" [(ngModel)]="author" />
+      <button type="submit" [disabled]="!author">Add</button>
+    </form>
+    <div>
+      <ul>
+        <li *ngFor="let a of authors; let i = index">{{ a }} <a href="#" (click)="$event.preventDefault(); remove(i)" >x</a></li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <button type="submit" [disabled]="!isValid">Save</button>
+  </div>
+</form>

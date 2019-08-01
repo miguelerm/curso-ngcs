@@ -1,6 +1,9 @@
 <ul>
   <li>
-    <h2><a [routerLink]="['/books']" routerLinkActive="router-link-active">Books</a></h2>
+    <a [routerLink]="['/books']" routerLinkActive="router-link-active">Books</a>
+    <ul>
+      <li><a [routerLink]="['/books', 'edit']" routerLinkActive="router-link-active">Edit</a></li>
+    </ul>
   </li>
 </ul>
 
