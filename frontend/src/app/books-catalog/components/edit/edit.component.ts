@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BooksCatalogService } from '../../services/books-catalog.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'abs-edit',
@@ -11,7 +12,7 @@ export class EditComponent implements OnInit {
 
   public title: string;
   public description: string;
-  public publishedOn: Date;
+  public publishedOn: NgbDateStruct;
   public author: string;
   public authors: string[] = [];
 
@@ -34,10 +35,16 @@ export class EditComponent implements OnInit {
   }
 
   public save() {
+    const po = this.publishedOn;
+    let publishedOn: Date;
+    if (po) {
+      const { year, month, day } = po;
+      publishedOn = new Date(year, month - 1, day);
+    }
     const data = {
       title: this.title,
       description: this.description,
-      publishedOn: this.publishedOn,
+      publishedOn,
       authors: this.authors.map(name => ({ name })),
     };
     this.svc.post(data).subscribe(

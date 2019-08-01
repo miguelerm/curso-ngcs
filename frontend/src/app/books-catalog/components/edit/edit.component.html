@@ -18,11 +18,13 @@
   <div>
     <label for="publishedOn">Published On:</label>
     <input
-      type="date"
+      type="text"
       id="publishedOn"
       name="publishedOn"
       [(ngModel)]="publishedOn"
+      ngbDatepicker #d="ngbDatepicker"
     />
+    <button type="button" (click)="d.toggle()">Calendar</button>
   </div>
   <div>
     <form (submit)="add()">

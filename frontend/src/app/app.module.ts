@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 import localeEsGT from '@angular/common/locales/es-GT';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-registerLocaleData(localeEsGT, 'es-GT');
+registerLocaleData(localeEs, 'es-GT', localeEsGT);
 @NgModule({
   declarations: [
     AppComponent
@@ -15,7 +16,7 @@ registerLocaleData(localeEsGT, 'es-GT');
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-GT' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
