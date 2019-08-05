@@ -28,6 +28,21 @@ tsc --init
 ng new awesome-bookstore --directory . --routing --prefix abs --style css
 ```
 
+```sh
+ng generate module books-catalog -m app --route books --routing
+```
+
+```sh
+ng generate module books-catalog/components
+ng generate module books-catalog/services
+```
+
+```sh
+ng generate component books-catalog/components/list
+ng generate component books-catalog/components/edit
+ng generate service books-catalog/services/books
+```
+
 ## Request
 
 ```http
