@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" [routerLink]="['/']">Awesome Books Store</a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse" [class.collapse]="collapsed">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item " ngbDropdown role="group" routerLinkActive="active">
+        <a class="nav-link" ngbDropdownToggle role="button" href="#" (click)="$event.preventDefault()">Catalogs</a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a ngbDropdownItem [routerLink]="['/books']">Books</a>
+        </div>
+      </li>
+      <li class="nav-item " ngbDropdown role="group" routerLinkActive="active">
+          <a class="nav-link" ngbDropdownToggle role="button" href="#" (click)="$event.preventDefault()">Security</a>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <a ngbDropdownItem [routerLink]="['/users']">Users</a>
+            <a ngbDropdownItem [routerLink]="['/roles']">Roles</a>
+          </div>
+        </li>
+    </ul>
+  </div>
+</nav>

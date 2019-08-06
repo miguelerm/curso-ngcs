@@ -6,7 +6,6 @@ import { BooksCatalogComponent } from './books-catalog.component';
 import { ComponentsModule } from './components/components.module';
 import { ServicesModule } from './services/services.module';
 
-
 @NgModule({
   declarations: [BooksCatalogComponent],
   imports: [

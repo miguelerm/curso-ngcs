@@ -1,44 +1,64 @@
-<h2>Edit {{ title }}</h2>
+<abs-page>
+    <h2>Edit {{ title }}</h2>
 
-<form (submit)="save()">
-  <div>
-    <label for="title">Title:</label>
-    <input id="title" type="text" [(ngModel)]="title" name="title" />
-  </div>
-  <div>
-    <label for="description">Description:</label>
-    <textarea
-      name="description"
-      id="description"
-      cols="30"
-      rows="10"
-      [(ngModel)]="description"
-    ></textarea>
-  </div>
-  <div>
-    <label for="publishedOn">Published On:</label>
-    <input
-      type="text"
-      id="publishedOn"
-      name="publishedOn"
-      [(ngModel)]="publishedOn"
-      ngbDatepicker #d="ngbDatepicker"
-    />
-    <button type="button" (click)="d.toggle()">Calendar</button>
-  </div>
-  <div>
-    <form (submit)="add()">
-      <label for="author">Authors:</label>
-      <input type="text" id="author" name="author" [(ngModel)]="author" />
-      <button type="submit" [disabled]="!author">Add</button>
+    <form (submit)="save()" >
+      <div class="form-group">
+        <label for="title" >Title:</label>
+        <input id="title" type="text" [(ngModel)]="title" name="title" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea
+          name="description"
+          id="description"
+          cols="30"
+          rows="10"
+          [(ngModel)]="description"
+          class="form-control"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="publishedOn">Published On:</label>
+        <div class="input-group">
+            <input
+            type="text"
+            id="publishedOn"
+            name="publishedOn"
+            [(ngModel)]="publishedOn"
+            ngbDatepicker #d="ngbDatepicker"
+            class="form-control"
+          />
+          <div class="input-group-append">
+            <button type="button" (click)="d.toggle()" class="btn btn-secondary">Calendar</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group">
+        <form (submit)="add()">
+          <div class="form-group">
+              <label for="author">Authors:</label>
+              <div class="input-group">
+                  <input type="text" id="author" name="author" [(ngModel)]="author" class="form-control" />
+                  <div class="input-group-append">
+                    <button type="submit" [disabled]="!author" class="btn btn-secondary">Add</button>
+                  </div>
+              </div>
+          </div>
+
+        </form>
+        <div>
+          <ul class="tags">
+            <li *ngFor="let a of authors; let i = index">
+                <span class="tag">{{ a }} <a href="#" class="remove" (click)="$event.preventDefault(); remove(i)" >&times;</a></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" [disabled]="!isValid" class="btn btn-primary">Save</button>
+      </div>
     </form>
-    <div>
-      <ul>
-        <li *ngFor="let a of authors; let i = index">{{ a }} <a href="#" (click)="$event.preventDefault(); remove(i)" >x</a></li>
-      </ul>
-    </div>
-  </div>
-  <div>
-    <button type="submit" [disabled]="!isValid">Save</button>
-  </div>
-</form>
+
+</abs-page>
+<!--  -->

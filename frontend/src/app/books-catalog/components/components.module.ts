@@ -5,6 +5,7 @@ import { ListComponent } from './list/list.component';
 import { EditComponent } from './edit/edit.component';
 import { NgbDatepickerModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './custom';
+import { LayoutModule } from 'src/app/layout/layout.module';
 
 @NgModule({
   declarations: [ListComponent, EditComponent],
@@ -12,6 +13,7 @@ import { NgbDateCustomParserFormatter } from './custom';
     CommonModule,
     FormsModule,
     NgbDatepickerModule,
+    LayoutModule,
   ],
   providers: [
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}

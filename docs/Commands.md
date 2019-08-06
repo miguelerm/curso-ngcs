@@ -18,31 +18,6 @@ dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
 
-## Frontend
-
-```sh
-tsc --init
-```
-
-```sh
-ng new awesome-bookstore --directory . --routing --prefix abs --style css
-```
-
-```sh
-ng generate module books-catalog -m app --route books --routing
-```
-
-```sh
-ng generate module books-catalog/components
-ng generate module books-catalog/services
-```
-
-```sh
-ng generate component books-catalog/components/list
-ng generate component books-catalog/components/edit
-ng generate service books-catalog/services/books
-```
-
 ## Request
 
 ```http
@@ -58,4 +33,56 @@ POST https://localhost:5001/api/books
         }
     ]
 }
+```
+
+
+## Frontend
+
+Crear el proyecto en el directorio actual, con rutas, un prefijo `abs` y css como lenguaje de estilos por defecto:
+
+```sh
+ng new awesome-bookstore --directory . --routing --prefix abs --style css
+```
+
+Crear el primer módulo `BooksCatalog` con una ruta `/books` lazy loading:
+
+```sh
+ng generate module books-catalog -m app --route books --routing
+```
+
+Crear dos sub-módulos uno para los componentes y otro para los servicios:
+
+```sh
+ng generate module books-catalog/components
+ng generate module books-catalog/services
+```
+
+Crear dos componentes (uno para listar los libros y otro para editar o crear los libros) así como el servicio que permitirá interactuar con el backend de libros:
+
+```sh
+ng generate component books-catalog/components/list
+ng generate component books-catalog/components/edit
+ng generate service books-catalog/services/books
+```
+
+### Layout
+
+Crear el módulo y el componente de menú:
+
+```sh
+ng generate module layout -m app
+ng generate component layout/menu --export=true
+```
+
+Crear el módulo `SharedModule` y la pagina 404
+
+```sh
+ng generate module shared -m app
+ng generate component shared/not-found
+```
+
+Creare layout de página por defecto
+
+```sh
+ng generate component layout/pag --export=true
 ```

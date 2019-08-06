@@ -14,7 +14,7 @@ export class EditComponent implements OnInit {
   public description: string;
   public publishedOn: NgbDateStruct;
   public author: string;
-  public authors: string[] = [];
+  public authors: string[] = ['asdf'];
 
   public get isValid() {
     return this.title && this.description;
