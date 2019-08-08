@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Editar</h4>
+  <button type="button" class="close" aria-label="Close" [routerLink]="['../../']" >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <ng-content></ng-content>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="save.emit()">Save</button>
+</div>

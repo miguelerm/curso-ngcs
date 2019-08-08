@@ -5,13 +5,22 @@
       <tr>
         <th>Id</th>
         <th>Title</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let book of books | async">
         <td>{{ book.id }}</td>
         <td>{{ book.title}}</td>
+        <td>
+          <div class="btn-group btn-group-sm">
+            <a [routerLink]="['./edit', book.id]" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+            <a [routerLink]="['./remove', book.id]" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
+
+  <router-outlet></router-outlet>
 </abs-catalog-page>

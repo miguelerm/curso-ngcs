@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { BooksCatalogService } from '../../services/books-catalog.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Input } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { IAuthor } from '../authors-list/authors-list.component';
-import ngbDateToDate from 'src/app/shared/functions/ngb-date-to-date.function';
 
 @Component({
   selector: 'abs-edit',
@@ -12,39 +9,22 @@ import ngbDateToDate from 'src/app/shared/functions/ngb-date-to-date.function';
 })
 export class EditComponent {
 
-  public title: string;
-  public description: string;
-  public publishedOn: NgbDateStruct;
-  public authors: IAuthor[] = [];
-
-  public get isValid() {
-    return this.title && this.description;
-  }
-
-  constructor(private svc: BooksCatalogService, private router: Router, private route: ActivatedRoute) { }
+  @Input()
+  public book: IEditBook;
 
   public add(author: IAuthor) {
-    this.authors.push(author);
+    this.book.authors.push(author);
   }
 
   public remove(index: number) {
-    this.authors.splice(index, 1);
+    this.book.authors.splice(index, 1);
   }
 
-  public save() {
+}
 
-    const data = {
-      title: this.title,
-      description: this.description,
-      publishedOn: ngbDateToDate(this.publishedOn),
-      authors: this.authors,
-    };
-
-    this.svc.post(data).subscribe(
-      () => this.router.navigate(['../'], { relativeTo: this.route }),
-      (...args) => console.log('error!!!!', args)
-    );
-
-  }
-
+export interface IEditBook {
+  title?: string;
+  description?: string;
+  publishedOn?: NgbDateStruct;
+  authors: IAuthor[];
 }

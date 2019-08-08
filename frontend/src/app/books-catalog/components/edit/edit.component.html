@@ -1,40 +1,23 @@
-<abs-create-page [title]="title" (save)="save()" [isValid]="isValid">
+<div class="form-group">
+  <label for="title">Title:</label>
+  <input id="title" type="text" [(ngModel)]="book.title" name="title" class="form-control" />
+</div>
+<div class="form-group">
+  <label for="description">Description:</label>
+  <textarea name="description" id="description" cols="30" rows="10" [(ngModel)]="book.description"
+    class="form-control"></textarea>
+</div>
+<div class="form-group">
+  <label for="publishedOn">Published On:</label>
+  <div class="input-group">
+    <input type="text" id="publishedOn" name="publishedOn" [(ngModel)]="book.publishedOn" ngbDatepicker #d="ngbDatepicker"
+      class="form-control" />
+    <div class="input-group-append">
+      <button type="button" (click)="d.toggle()" class="btn btn-secondary">Calendar</button>
+    </div>
+  </div>
 
-      <div class="form-group">
-        <label for="title" >Title:</label>
-        <input id="title" type="text" [(ngModel)]="title" name="title" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea
-          name="description"
-          id="description"
-          cols="30"
-          rows="10"
-          [(ngModel)]="description"
-          class="form-control"
-        ></textarea>
-      </div>
-      <div class="form-group">
-        <label for="publishedOn">Published On:</label>
-        <div class="input-group">
-            <input
-            type="text"
-            id="publishedOn"
-            name="publishedOn"
-            [(ngModel)]="publishedOn"
-            ngbDatepicker #d="ngbDatepicker"
-            class="form-control"
-          />
-          <div class="input-group-append">
-            <button type="button" (click)="d.toggle()" class="btn btn-secondary">Calendar</button>
-          </div>
-        </div>
-
-      </div>
-      <div class="form-group">
-        <abs-authors-editor [authors]="authors" (add)="add($event)" (remove)="remove($event)"></abs-authors-editor>
-      </div>
-
-
-</abs-create-page>
+</div>
+<div class="form-group">
+  <abs-authors-editor [authors]="book.authors" (add)="add($event)" (remove)="remove($event)"></abs-authors-editor>
+</div>

@@ -7,17 +7,18 @@ import { PageComponent } from './page/page.component';
 import { CatalogPageComponent } from './catalog-page/catalog-page.component';
 import { CreatePageComponent } from './create-page/create-page.component';
 import { FormsModule } from '@angular/forms';
+import { EditModalComponent } from './edit-modal/edit-modal.component';
 
 
 
 @NgModule({
-  declarations: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent],
+  declarations: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent, EditModalComponent],
   imports: [
     CommonModule,
     RouterModule,
     NgbDropdownModule,
     FormsModule,
   ],
-  exports: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent]
+  exports: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent, EditModalComponent]
 })
 export class LayoutModule { }
