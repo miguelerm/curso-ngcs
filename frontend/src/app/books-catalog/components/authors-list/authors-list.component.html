@@ -1,0 +1,5 @@
+<ul class="tags">
+  <li *ngFor="let a of authors; let i = index">
+      <span class="tag">{{ a.name }} <a href="#" class="remove" (click)="$event.preventDefault(); remove.emit(i)" >&times;</a></span>
+  </li>
+</ul>

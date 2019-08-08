@@ -5,7 +5,17 @@
   "projects": {
     "awesome-bookstore": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "abs",
@@ -116,5 +126,5 @@
         }
       }
     }},
-  "defaultProject": "awesome-bookstore",
+  "defaultProject": "awesome-bookstore"
 }

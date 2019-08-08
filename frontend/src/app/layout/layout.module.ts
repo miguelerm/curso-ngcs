@@ -5,16 +5,19 @@ import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageComponent } from './page/page.component';
 import { CatalogPageComponent } from './catalog-page/catalog-page.component';
+import { CreatePageComponent } from './create-page/create-page.component';
+import { FormsModule } from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [MenuComponent, PageComponent, CatalogPageComponent],
+  declarations: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent],
   imports: [
     CommonModule,
     RouterModule,
     NgbDropdownModule,
+    FormsModule,
   ],
-  exports: [MenuComponent, PageComponent, CatalogPageComponent]
+  exports: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent]
 })
 export class LayoutModule { }

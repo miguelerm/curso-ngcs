@@ -1,0 +1,12 @@
+<form (submit)="add();">
+  <div class="form-group">
+      <label for="author">Authors:</label>
+      <div class="input-group">
+          <input type="text" #nameInput id="author" name="author" [(ngModel)]="name" class="form-control" />
+          <div class="input-group-append">
+            <button type="submit" [disabled]="!name || !isUnique()" class="btn btn-secondary">Add</button>
+          </div>
+      </div>
+  </div>
+
+</form>

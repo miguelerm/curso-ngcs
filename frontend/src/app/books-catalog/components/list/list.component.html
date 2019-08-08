@@ -1,7 +1,17 @@
-<abs-catalog-page>
-<h1>Books</h1>
+<abs-catalog-page [title]="'Books'">
 
-<ul>
-  <li *ngFor="let book of books | async">{{ book.title}}</li>
-</ul>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books | async">
+        <td>{{ book.id }}</td>
+        <td>{{ book.title}}</td>
+      </tr>
+    </tbody>
+  </table>
 </abs-catalog-page>

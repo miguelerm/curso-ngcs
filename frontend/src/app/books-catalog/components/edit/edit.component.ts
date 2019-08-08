@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { BooksCatalogService } from '../../services/books-catalog.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { IAuthor } from '../authors-list/authors-list.component';
+import ngbDateToDate from 'src/app/shared/functions/ngb-date-to-date.function';
 
 @Component({
   selector: 'abs-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css']
 })
-export class EditComponent implements OnInit {
+export class EditComponent {
 
   public title: string;
   public description: string;
   public publishedOn: NgbDateStruct;
-  public author: string;
-  public authors: string[] = ['asdf'];
+  public authors: IAuthor[] = [];
 
   public get isValid() {
     return this.title && this.description;
@@ -22,12 +23,8 @@ export class EditComponent implements OnInit {
 
   constructor(private svc: BooksCatalogService, private router: Router, private route: ActivatedRoute) { }
 
-  ngOnInit() {
-  }
-
-  public add() {
-    this.authors.push(this.author);
-    this.author = '';
+  public add(author: IAuthor) {
+    this.authors.push(author);
   }
 
   public remove(index: number) {
@@ -35,23 +32,19 @@ export class EditComponent implements OnInit {
   }
 
   public save() {
-    const po = this.publishedOn;
-    let publishedOn: Date;
-    if (po) {
-      const { year, month, day } = po;
-      publishedOn = new Date(year, month - 1, day);
-    }
+
     const data = {
       title: this.title,
       description: this.description,
-      publishedOn,
-      authors: this.authors.map(name => ({ name })),
+      publishedOn: ngbDateToDate(this.publishedOn),
+      authors: this.authors,
     };
+
     this.svc.post(data).subscribe(
-      () => this.router.navigate(['../list'], { relativeTo: this.route }),
+      () => this.router.navigate(['../'], { relativeTo: this.route }),
       (...args) => console.log('error!!!!', args)
     );
-    console.log(JSON.stringify(data));
+
   }
 
 }

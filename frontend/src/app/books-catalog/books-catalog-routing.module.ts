@@ -5,8 +5,7 @@ import { ListComponent } from './components/list/list.component';
 import { EditComponent } from './components/edit/edit.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'list' },
-  { path: 'list', component: ListComponent },
+  { path: '', component: ListComponent },
   { path: 'create', component: EditComponent },
 ];
 
