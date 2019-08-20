@@ -4,6 +4,7 @@ import ngbDateToDate from 'src/app/shared/functions/ngb-date-to-date.function';
 import { BooksCatalogService } from '../../services/books-catalog.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { isBookValid } from '../../functions/is-book-valid.function';
+import { ICoverFile } from '../covers-editor/covers-editor.component';
 
 @Component({
   selector: 'abs-create',
@@ -12,7 +13,7 @@ import { isBookValid } from '../../functions/is-book-valid.function';
 })
 export class CreateComponent {
 
-  public book: IEditBook = { authors: [] };
+  public book: IEditBook = { authors: [], covers: [] };
   public isValid = () => isBookValid(this.book);
 
   constructor(private svc: BooksCatalogService, private router: Router, private route: ActivatedRoute) { }
@@ -25,6 +26,7 @@ export class CreateComponent {
       description: book.description,
       publishedOn: ngbDateToDate(book.publishedOn),
       authors: book.authors,
+      covers: book.covers.map(({code}) => ({ code }))
     };
 
     this.svc.post(data).subscribe(

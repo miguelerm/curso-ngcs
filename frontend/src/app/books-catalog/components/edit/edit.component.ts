@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { IAuthor } from '../authors-list/authors-list.component';
+import { ICoverFile } from '../covers-editor/covers-editor.component';
 
 @Component({
   selector: 'abs-edit',
@@ -27,4 +28,5 @@ export interface IEditBook {
   description?: string;
   publishedOn?: NgbDateStruct;
   authors: IAuthor[];
+  covers: ICoverFile[];
 }

@@ -1,0 +1,21 @@
+<div>
+  <form>
+    <input type="file" name="files" accept="image/*" multiple="true" id="files" #inputFiles (change)="addFiles(inputFiles);">
+    <button type="button" class="btn btn-secondary" (click)="inputFiles.click()">Add Cover</button>
+  </form>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Cover</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cover of covers">
+        <td><img [src]="cover.src" height="200" *ngIf="cover.src"></td>
+        <td>{{ cover.size }} <span *ngIf="!cover.code">{{ cover.progress }}%</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

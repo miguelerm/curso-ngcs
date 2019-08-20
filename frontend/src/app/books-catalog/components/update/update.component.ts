@@ -17,7 +17,7 @@ import { isBookValid } from '../../functions/is-book-valid.function';
 export class UpdateComponent implements OnInit, OnDestroy {
 
   private id: number;
-  public book: IEditBook = { authors: [] };
+  public book: IEditBook = { authors: [], covers: [] };
 
   @ViewChild('content', { static: false})
   public template: NgTemplateOutlet;
@@ -44,6 +44,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
         const date = new Date(book.publishedOn);
         this.book = {
           ...book,
+          covers: [],
           publishedOn: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
         };
       }),
@@ -71,6 +72,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
       description: book.description,
       publishedOn: ngbDateToDate(book.publishedOn),
       authors: book.authors,
+      covers: book.covers.map(({code}) => ({code}))
     };
 
     this.svc.put(data).subscribe(

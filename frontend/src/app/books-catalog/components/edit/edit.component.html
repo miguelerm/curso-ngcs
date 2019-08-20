@@ -21,3 +21,7 @@
 <div class="form-group">
   <abs-authors-editor [authors]="book.authors" (add)="add($event)" (remove)="remove($event)"></abs-authors-editor>
 </div>
+<div class="form-group">
+  <label>Covers:</label>
+  <abs-covers-editor [covers]="book.covers"></abs-covers-editor>
+</div>

@@ -16,6 +16,7 @@ import { AuthorsFormComponent } from "./authors-form/authors-form.component";
 import { RouterModule } from "@angular/router";
 import { CreateComponent } from "./create/create.component";
 import { UpdateComponent } from "./update/update.component";
+import { CoversEditorComponent } from './covers-editor/covers-editor.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { UpdateComponent } from "./update/update.component";
     AuthorsEditorComponent,
     AuthorsFormComponent,
     CreateComponent,
-    UpdateComponent
+    UpdateComponent,
+    CoversEditorComponent
   ],
   imports: [
     CommonModule,

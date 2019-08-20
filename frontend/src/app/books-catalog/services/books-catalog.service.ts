@@ -40,6 +40,7 @@ export interface IPostBook {
   description: string;
   publishedOn?: Date;
   authors: {name: string}[];
+  covers: {code: string}[];
 }
 
 export interface IPutBook extends IPostBook {
