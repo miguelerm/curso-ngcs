@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abs.BooksCatalog.Service.Clients;
 using Abs.BooksCatalog.Service.Data;
+using Abs.FilesManager.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,11 +34,31 @@ namespace Abs.BooksCatalog.Service
             services.AddDbContext<BooksCatalogContext>(options => {
                 //options.UseInMemoryDatabase("BooksDb");
                 options.UseSqlite("Data Source=books.db");
+
             });
+
+            services.AddHttpClient();
+            services.AddTransient<FilesClient>();
+            services.AddHttpClient<FilesClient>();
+
+            services.AddMassTransit(x => {
+
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+                {
+                    var host = config.Host("localhost", "demos", h => {
+                        h.Username("demo-user");
+                        h.Password("demo-user");
+                    });
+
+                }));
+
+            });
+
+            services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, BusService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider sp)
         {
             if (env.IsDevelopment())
             {

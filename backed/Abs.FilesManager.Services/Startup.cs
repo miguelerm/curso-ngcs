@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abs.FilesManager.Services.Consumers;
+using Abs.FilesManager.Services.Messages;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Abs.FileManager.Service
+namespace Abs.FilesManager.Services
 {
     public class Startup
     {
@@ -26,6 +29,26 @@ namespace Abs.FileManager.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddMassTransit(x => {
+
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+                {
+                    var host = config.Host("localhost", "demos", h => {
+                        h.Username("demo-user");
+                        h.Password("demo-user");
+                    });
+
+                    config.ReceiveEndpoint(host, "files-service", endpoint =>
+                    {
+                        endpoint.Consumer<PutFilesConsumer>();
+                    });
+
+                }));
+
+            });
+
+            services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, BusService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

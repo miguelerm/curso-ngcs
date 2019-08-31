@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Abs.FileManager.Service
+namespace Abs.FilesManager.Services
 {
     public class Program
     {

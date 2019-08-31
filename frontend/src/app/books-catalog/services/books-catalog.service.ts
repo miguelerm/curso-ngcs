@@ -33,6 +33,7 @@ export interface IBookSummary {
   description: string;
   publishedOn?: Date;
   authors: {name: string}[];
+  covers: {code: string}[];
 }
 
 export interface IPostBook {

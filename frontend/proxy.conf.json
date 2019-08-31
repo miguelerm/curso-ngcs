@@ -1,11 +1,11 @@
 {
   "/api/books": {
-    "target": "https://localhost:5001",
+    "target": "https://localhost:5001/",
     "secure": false,
     "logLevel": "debug"
   },
   "/api/files": {
-    "target": "https://localhost:5003",
+    "target": "https://localhost:5003/",
     "secure": false,
     "logLevel": "debug"
   }

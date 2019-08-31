@@ -44,7 +44,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
         const date = new Date(book.publishedOn);
         this.book = {
           ...book,
-          covers: [],
+          covers: book.covers.map(c => ({...c, src: '/api/files/' + c.code + '?size=small'})),
           publishedOn: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
         };
       }),

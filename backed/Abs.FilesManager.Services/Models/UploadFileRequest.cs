@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace Abs.FileManager.Service.Models
+namespace Abs.FilesManager.Services.Models
 {
-    public class UploadFilesModel
+    public class UploadFileRequest
     {
         public string Tag { get; set; }
         public IEnumerable<IFormFile> Files { get; set; }

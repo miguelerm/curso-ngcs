@@ -15,5 +15,6 @@ namespace Abs.BooksCatalog.Service.Data
         public string Description { get; set; }
         public DateTime? PublishedOn { get; set; }
         public List<Author> Authors { get; set; }
+        public List<Cover> Covers { get; set; }
     }
 }

@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Abs.BooksCatalog.Service.Data;
 using Microsoft.Extensions.Logging;
+using Abs.BooksCatalog.Service.Clients;
+using MassTransit;
+using Abs.FilesManager.Services.Messages;
 
 namespace Abs.BooksCatalog.Service.Controllers
 {
@@ -14,10 +17,12 @@ namespace Abs.BooksCatalog.Service.Controllers
     {
         private readonly BooksCatalogContext context;
         private readonly ILogger<BooksController> logger;
+        private readonly IBus bus;
 
-        public BooksController(BooksCatalogContext context, ILogger<BooksController> logger)
+        public BooksController(BooksCatalogContext context, ILogger<BooksController> logger, IBus bus)
         {
             this.logger = logger;
+            this.bus = bus;
             this.context = context;
         }
 
@@ -26,14 +31,14 @@ namespace Abs.BooksCatalog.Service.Controllers
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
             logger.LogDebug("Getting all books");
-            return await context.Books.Include(x => x.Authors).ToListAsync();
+            return await context.Books.Include(x => x.Authors).Include(x => x.Covers).ToListAsync();
         }
 
         // GET: api/Books/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await context.Books.Include(x => x.Authors).FirstOrDefaultAsync(x => x.Id == id);
+            var book = await context.Books.Include(x => x.Authors).Include(x => x.Covers).FirstOrDefaultAsync(x => x.Id == id);
 
             if (book == null)
             {
@@ -84,6 +89,11 @@ namespace Abs.BooksCatalog.Service.Controllers
         {
             context.Books.Add(book);
             await context.SaveChangesAsync();
+
+            foreach (var cover in book.Covers)
+            {
+                await bus.Publish<IPutFile>(new { cover.Code });
+            }
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
