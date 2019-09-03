@@ -7,10 +7,18 @@
 
   <ItemGroup>
     <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.5" />
+    <PackageReference Include="MassTransit.Extensions.Logging" Version="5.5.5" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="5.5.5" />
+    <PackageReference Include="MassTransit.SerilogIntegration" Version="5.5.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abs.Messages\Abs.Messages.csproj" />
   </ItemGroup>
 
 </Project>

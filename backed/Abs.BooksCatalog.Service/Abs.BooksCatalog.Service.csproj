@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Abs.Messages\Abs.Messages.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Abs.BooksCatalog.Service.Data;
 using Microsoft.Extensions.Logging;
-using Abs.BooksCatalog.Service.Clients;
 using MassTransit;
-using Abs.FilesManager.Services.Messages;
+using Abs.Messages.BooksCatalog.Events;
 
 namespace Abs.BooksCatalog.Service.Controllers
 {
@@ -89,11 +88,7 @@ namespace Abs.BooksCatalog.Service.Controllers
         {
             context.Books.Add(book);
             await context.SaveChangesAsync();
-
-            foreach (var cover in book.Covers)
-            {
-                await bus.Publish<IPutFile>(new { cover.Code });
-            }
+            await bus.Publish<IBookCreated>(book);
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }

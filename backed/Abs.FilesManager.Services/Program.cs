@@ -7,6 +7,9 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace Abs.FilesManager.Services
 {
@@ -14,7 +17,20 @@ namespace Abs.FilesManager.Services
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var logger = new LoggerConfiguration()
+                .MinimumLevel.Warning()
+                .MinimumLevel.Override("Abs.FilesManager.Services.Consumers", LogEventLevel.Verbose)
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
+
+            CreateWebHostBuilder(args)
+                .ConfigureLogging(c =>
+                {
+                    c.ClearProviders();
+                    c.AddSerilog(logger);
+                })
+                .Build()
+                .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

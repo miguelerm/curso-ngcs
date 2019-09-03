@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Abs.FilesManager.Services.Consumers;
-using Abs.FilesManager.Services.Messages;
+﻿using Abs.FilesManager.Services.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Abs.FilesManager.Services
 {
@@ -32,6 +25,7 @@ namespace Abs.FilesManager.Services
 
             services.AddMassTransit(x => {
 
+                x.AddConsumer<BookCreatedConsumer>();
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
                     var host = config.Host("localhost", "demos", h => {
@@ -42,7 +36,12 @@ namespace Abs.FilesManager.Services
                     config.ReceiveEndpoint(host, "files-service", endpoint =>
                     {
                         endpoint.Consumer<PutFilesConsumer>();
+                        endpoint.ConfigureConsumer<BookCreatedConsumer>(provider);
+                        endpoint.Consumer<FileCreatedConsumer>();
                     });
+
+                    config.UseSerilog();
+                    config.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
 
                 }));
 
@@ -52,7 +51,7 @@ namespace Abs.FilesManager.Services
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -66,6 +65,13 @@ namespace Abs.FilesManager.Services
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            logger.LogTrace("Test log Trace");
+            logger.LogDebug("Test log Debug");
+            logger.LogInformation("Test log Information");
+            logger.LogWarning("Test log Warning");
+            logger.LogError("Test log Error");
+            logger.LogCritical("Test log Critical");
         }
     }
 }

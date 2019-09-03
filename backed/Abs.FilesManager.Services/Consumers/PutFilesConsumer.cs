@@ -1,19 +1,18 @@
-﻿using Abs.FilesManager.Services.Messages;
+﻿using Abs.Messages.FilesManager.Commands;
+using Abs.Messages.FilesManager.Events;
 using MassTransit;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Abs.FilesManager.Services.Consumers
 {
-    public class PutFilesConsumer : IConsumer<IPutFile>
+    public class PutFilesConsumer : IConsumer<IPutTemporaryFile>
     {
         private static readonly Regex fileNameFormat = new Regex("^[0-9]{14}-[0-9a-fA-F]{32}$");
 
-        public Task Consume(ConsumeContext<IPutFile> context)
+        public Task Consume(ConsumeContext<IPutTemporaryFile> context)
         {
             var code = context.Message.Code;
 
@@ -39,7 +38,7 @@ namespace Abs.FilesManager.Services.Consumers
 
             file.MoveTo(finalFileName);
             meta.MoveTo(finalMetaFile);
-            return Task.CompletedTask;
+            return context.Publish<IFileCreated>(new { Code = code });
         }
     }
 }
