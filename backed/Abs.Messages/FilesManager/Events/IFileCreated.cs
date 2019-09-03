@@ -1,4 +1,6 @@
-﻿namespace Abs.Messages.FilesManager.Events
+﻿using System;
+
+namespace Abs.Messages.FilesManager.Events
 {
     public interface IFileCreated
     {

@@ -49,7 +49,6 @@ namespace Abs.BooksCatalog.Service
                         h.Username("demo-user");
                         h.Password("demo-user");
                     });
-
                 }));
 
             });

@@ -1,4 +1,6 @@
-﻿namespace Abs.Messages.FilesManager.Commands
+﻿using System;
+
+namespace Abs.Messages.FilesManager.Commands
 {
     public interface IPutTemporaryFile
     {

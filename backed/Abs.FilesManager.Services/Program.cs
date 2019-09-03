@@ -20,6 +20,7 @@ namespace Abs.FilesManager.Services
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Warning()
                 .MinimumLevel.Override("Abs.FilesManager.Services.Consumers", LogEventLevel.Verbose)
+                .MinimumLevel.Override("Abs.Messages", LogEventLevel.Verbose)
                 .WriteTo.ColoredConsole()
                 .CreateLogger();
 

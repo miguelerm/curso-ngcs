@@ -19,7 +19,6 @@ namespace Abs.FilesManager.Services.Consumers
         {
             var message = context.Message;
             logger.LogDebug("*** New IBookCreated Message received ***");
-            logger.LogTrace("{@message}", message);
             return Task.WhenAll(
                 message.Covers
                     .Select(c => 

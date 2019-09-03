@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using Abs.Messages.BooksCatalog.Events;
+using MassTransit;
+using MassTransit.Context;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;

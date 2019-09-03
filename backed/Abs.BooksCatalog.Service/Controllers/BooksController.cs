@@ -88,7 +88,10 @@ namespace Abs.BooksCatalog.Service.Controllers
         {
             context.Books.Add(book);
             await context.SaveChangesAsync();
-            await bus.Publish<IBookCreated>(book);
+            await bus.Publish<IBookCreated>(book, c => {
+                c.CorrelationId = NewId.NextGuid();
+                c.Headers.Set("_user", "fulanito");
+            });
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }

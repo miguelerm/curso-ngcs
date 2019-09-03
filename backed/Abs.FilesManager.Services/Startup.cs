@@ -1,4 +1,5 @@
 ﻿using Abs.FilesManager.Services.Consumers;
+using Abs.FilesManager.Services.Observers;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,9 +24,14 @@ namespace Abs.FilesManager.Services
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddTransient<IConsumeObserver, LoggingObserver>();
+
             services.AddMassTransit(x => {
 
+                x.AddConsumer<PutFilesConsumer>();
                 x.AddConsumer<BookCreatedConsumer>();
+                x.AddConsumer<FileCreatedConsumer>();
+
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
                     var host = config.Host("localhost", "demos", h => {
@@ -35,9 +41,9 @@ namespace Abs.FilesManager.Services
 
                     config.ReceiveEndpoint(host, "files-service", endpoint =>
                     {
-                        endpoint.Consumer<PutFilesConsumer>();
+                        endpoint.ConfigureConsumer<PutFilesConsumer>(provider);
                         endpoint.ConfigureConsumer<BookCreatedConsumer>(provider);
-                        endpoint.Consumer<FileCreatedConsumer>();
+                        endpoint.ConfigureConsumer<FileCreatedConsumer>(provider);
                     });
 
                     config.UseSerilog();
