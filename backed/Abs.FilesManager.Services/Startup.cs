@@ -1,5 +1,6 @@
 ﻿using Abs.FilesManager.Services.Consumers;
 using Abs.FilesManager.Services.Observers;
+using Abs.Messages.BooksCatalog.Queries;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Abs.FilesManager.Services
 {
@@ -31,6 +33,7 @@ namespace Abs.FilesManager.Services
                 x.AddConsumer<PutFilesConsumer>();
                 x.AddConsumer<BookCreatedConsumer>();
                 x.AddConsumer<FileCreatedConsumer>();
+                x.AddRequestClient<IGetBookByIdRequest>(new Uri("rabbitmq://localhost/demos/books-manager"));
 
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
@@ -44,8 +47,10 @@ namespace Abs.FilesManager.Services
                         endpoint.ConfigureConsumer<PutFilesConsumer>(provider);
                         endpoint.ConfigureConsumer<BookCreatedConsumer>(provider);
                         endpoint.ConfigureConsumer<FileCreatedConsumer>(provider);
+
                     });
 
+                    
                     config.UseSerilog();
                     config.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
 

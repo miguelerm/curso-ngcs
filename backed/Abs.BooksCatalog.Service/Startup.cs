@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abs.BooksCatalog.Service.Clients;
+using Abs.BooksCatalog.Service.Consumers;
 using Abs.BooksCatalog.Service.Data;
 using Abs.FilesManager.Services;
 using MassTransit;
@@ -43,11 +44,17 @@ namespace Abs.BooksCatalog.Service
 
             services.AddMassTransit(x => {
 
+                x.AddConsumer<GetBookByIdConsumer>();
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
                     var host = config.Host("localhost", "demos", h => {
                         h.Username("demo-user");
                         h.Password("demo-user");
+                    });
+
+                    config.ReceiveEndpoint(host, "books-manager", endpoint =>
+                    {
+                        endpoint.ConfigureConsumer<GetBookByIdConsumer>(provider);
                     });
                 }));
 

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Abs.FilesManager.Services.Models;
+using Abs.Messages.BooksCatalog.Queries;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,7 +18,22 @@ namespace Abs.FilesManager.Services.Controllers
     public class FilesController : ControllerBase
     {
 
+        
+
         private static readonly Regex fileNameFormat = new Regex("^[0-9]{14}-[0-9a-fA-F]{32}$");
+        private readonly IRequestClient<IGetBookByIdRequest> client;
+
+        public FilesController(IRequestClient<IGetBookByIdRequest> client)
+        {
+            this.client = client;
+        }
+
+        [HttpGet("test")]
+        public async Task<ActionResult<IGetBookByIdResponse>> GetTest()
+        {
+            var book = await client.GetResponse<IGetBookByIdResponse>(new { id = 1 });
+            return Ok(book);
+        }
 
         [HttpPost]
         public ActionResult Post([FromForm] UploadFileRequest model)
