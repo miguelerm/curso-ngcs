@@ -10,6 +10,8 @@ using WebApp.Consumers;
 using WebApp.Hosts;
 using MassTransit.Audit;
 using WebApp.Stores;
+using System;
+using GreenPipes;
 
 namespace WebApp
 {
@@ -37,9 +39,17 @@ namespace WebApp
                         h.Password("demo-user");
                     });
 
+                    //config.UseMessageScheduler(new Uri("rabbitmq://localhost/demos/masstransit_quartz_scheduler"));
+
                     config.ReceiveEndpoint(host, "web-app", endpoint =>
                     {
-                        endpoint.Consumer<SayHelloConsumer>();
+                        //endpoint.UseScheduledRedelivery(r => r.Intervals(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(15), TimeSpan.FromMinutes(30)));
+                        //endpoint.UseMessageRetry(r => r.Immediate(5));
+
+                        endpoint.Consumer<SayHelloConsumer>(c => c.UseMessageRetry(r => {
+                            r.Immediate(5);
+                            r.Ignore<InvalidOperationException>();
+                        }));
                     });
 
                     config.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());

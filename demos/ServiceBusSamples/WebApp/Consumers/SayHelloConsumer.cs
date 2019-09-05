@@ -9,6 +9,18 @@ namespace WebApp.Consumers
     {
         public Task Consume(ConsumeContext<ISayHello> context)
         {
+            if (context.Message.Salute.Contains("Error 2"))
+            {
+                Console.WriteLine(":'(");
+                throw new InvalidOperationException("Error");
+            }
+
+            if (context.Message.Salute.Contains("Error"))
+            {
+                Console.WriteLine(":(");
+                throw new Exception("Error");
+            }           
+
             Console.WriteLine($"Hello: {context.Message.Salute}");
             return Task.CompletedTask;
         }
