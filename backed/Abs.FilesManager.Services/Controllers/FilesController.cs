@@ -9,6 +9,8 @@ using Abs.Messages.BooksCatalog.Queries;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Abs.FilesManager.Services.Controllers
@@ -17,15 +19,16 @@ namespace Abs.FilesManager.Services.Controllers
     [ApiController]
     public class FilesController : ControllerBase
     {
-
-        
-
         private static readonly Regex fileNameFormat = new Regex("^[0-9]{14}-[0-9a-fA-F]{32}$");
         private readonly IRequestClient<IGetBookByIdRequest> client;
+        private readonly ILogger<FilesController> logger;
+        private readonly FilesConfig options;
 
-        public FilesController(IRequestClient<IGetBookByIdRequest> client)
+        public FilesController(IRequestClient<IGetBookByIdRequest> client, IOptionsMonitor<FilesConfig> options, ILogger<FilesController> logger)
         {
             this.client = client;
+            this.logger = logger;
+            this.options = options.CurrentValue;
         }
 
         [HttpGet("test")]
@@ -38,7 +41,8 @@ namespace Abs.FilesManager.Services.Controllers
         [HttpPost]
         public ActionResult Post([FromForm] UploadFileRequest model)
         {
-            var folder = Path.GetTempPath();
+            var folder = options.TemporaryFolder;
+            logger.LogDebug("Using temp folder: {folder}", folder);
             var totalSize = 0L;
             var resultFiles = new Dictionary<string, string>(model.Files.Count());
 
@@ -80,7 +84,8 @@ namespace Abs.FilesManager.Services.Controllers
                 return BadRequest();
             }
 
-            var folder = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+            var folder = options.FinalFolder;
+            logger.LogDebug("Using final folder: {folder}", folder);
             var (path, meta) = BuildFilePaths(folder, code);
 
             var file = new FileInfo(path);

@@ -18,7 +18,7 @@ namespace Abs.BooksCatalog.Service.Controllers
         private readonly ILogger<BooksController> logger;
         private readonly IBus bus;
 
-        public BooksController(BooksCatalogContext context, ILogger<BooksController> logger, IBus bus)
+        public BooksController(BooksCatalogContext context, IBus bus, ILogger<BooksController> logger)
         {
             this.logger = logger;
             this.bus = bus;
@@ -88,7 +88,8 @@ namespace Abs.BooksCatalog.Service.Controllers
         {
             context.Books.Add(book);
             await context.SaveChangesAsync();
-            await bus.Publish<IBookCreated>(book, c => {
+            await bus.Publish<IBookCreated>(book, c =>
+            {
                 c.CorrelationId = NewId.NextGuid();
                 c.Headers.Set("_user", "fulanito");
             });

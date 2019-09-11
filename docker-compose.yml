@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+
+  books:
+    build: 
+        context: backed/
+        dockerfile: Books.Dockerfile
+    volumes:
+      - ./data/database/:/app/database/
+    environment:
+      - BUS__USERNAME=guest
+      - BUS__PASSWORD=guest
+    depends_on:
+      - bus
+
+  files:
+    build: 
+        context: backed/
+        dockerfile: Files.Dockerfile
+    volumes:
+      - ./files.appsettings.json:/app/appsettings.json:ro
+      - ./data/files/:/app/Files/
+      - ./data/temp/:/tmp/Files/
+    environment:
+      - BUS__USERNAME=guest
+      - BUS__PASSWORD=guest
+    depends_on:
+      - bus
+
+  ui:
+    build: 
+        context: frontend/
+
+  proxy:
+    image: nginx:1.17
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - books
+      - files
+      - ui
+    ports:
+      - "8888:80"
+
+  bus:
+    image: "rabbitmq:3-management"
+#    ports:
+#    - "15672:15672"
+#    - "5672:5672"
+

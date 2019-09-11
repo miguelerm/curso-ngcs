@@ -1,0 +1,17 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug"
+    }
+  },
+  "Bus": {
+    "Host": "rabbitmq://bus",
+    "Username": "[username]",
+    "Password": "[password]"
+  },
+  "Files": {
+    "TemporaryFolder": "/tmp/Files",
+    "FinalFolder":  "/app/Files"
+  },
+  "AllowedHosts": "*"
+}

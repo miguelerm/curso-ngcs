@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Abs.BooksCatalog.Service.Clients;
 using Abs.BooksCatalog.Service.Consumers;
 using Abs.BooksCatalog.Service.Data;
 using Abs.FilesManager.Services;
+using GreenPipes;
 using MassTransit;
+using MassTransit.Topology;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,22 +37,24 @@ namespace Abs.BooksCatalog.Service
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<BooksCatalogContext>(options => {
                 //options.UseInMemoryDatabase("BooksDb");
-                options.UseSqlite("Data Source=books.db");
-
+                options.UseSqlite("Data Source=database/books.db");
             });
 
             services.AddHttpClient();
             services.AddTransient<FilesClient>();
             services.AddHttpClient<FilesClient>();
 
-            services.AddMassTransit(x => {
+            services.AddMassTransit(x =>
+            {
 
                 x.AddConsumer<GetBookByIdConsumer>();
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
-                    var host = config.Host("localhost", "demos", h => {
-                        h.Username("demo-user");
-                        h.Password("demo-user");
+                    var hostConfig = provider.GetService<IConfiguration>().GetSection("Bus");
+                    var host = config.Host(new Uri(hostConfig["Host"]), h =>
+                    {
+                        h.Username(hostConfig["Username"]);
+                        h.Password(hostConfig["Password"]);
                     });
 
                     config.ReceiveEndpoint(host, "books-manager", endpoint =>
@@ -61,6 +66,7 @@ namespace Abs.BooksCatalog.Service
             });
 
             services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, BusService>();
+            services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, MigrationsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,10 +79,10 @@ namespace Abs.BooksCatalog.Service
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

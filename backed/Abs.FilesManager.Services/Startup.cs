@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 
 namespace Abs.FilesManager.Services
 {
@@ -26,6 +27,8 @@ namespace Abs.FilesManager.Services
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.Configure<FilesConfig>(Configuration.GetSection("Files"));
+
             services.AddTransient<IConsumeObserver, LoggingObserver>();
 
             services.AddMassTransit(x => {
@@ -37,9 +40,11 @@ namespace Abs.FilesManager.Services
 
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
-                    var host = config.Host("localhost", "demos", h => {
-                        h.Username("demo-user");
-                        h.Password("demo-user");
+                    var hostConfig = provider.GetService<IConfiguration>().GetSection("Bus");
+                    var host = config.Host(new Uri(hostConfig["Host"]), h =>
+                    {
+                        h.Username(hostConfig["Username"]);
+                        h.Password(hostConfig["Password"]);
                     });
 
                     config.ReceiveEndpoint(host, "files-service", endpoint =>
@@ -47,7 +52,6 @@ namespace Abs.FilesManager.Services
                         endpoint.ConfigureConsumer<PutFilesConsumer>(provider);
                         endpoint.ConfigureConsumer<BookCreatedConsumer>(provider);
                         endpoint.ConfigureConsumer<FileCreatedConsumer>(provider);
-
                     });
 
                     
@@ -71,12 +75,15 @@ namespace Abs.FilesManager.Services
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
 
+            Console.WriteLine("Environment: " + env.EnvironmentName);
+            Console.WriteLine("All config: ");
+            Console.WriteLine(System.IO.File.ReadAllText(Path.Join(Directory.GetCurrentDirectory(), "appsettings.json")));
             logger.LogTrace("Test log Trace");
             logger.LogDebug("Test log Debug");
             logger.LogInformation("Test log Information");
