@@ -84,9 +84,6 @@ namespace Abs.FilesManager.Services
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            Console.WriteLine("Environment: " + env.EnvironmentName);
-            Console.WriteLine("All config: ");
-            Console.WriteLine(System.IO.File.ReadAllText(Path.Join(Directory.GetCurrentDirectory(), "appsettings.json")));
             logger.LogTrace("Test log Trace");
             logger.LogDebug("Test log Debug");
             logger.LogInformation("Test log Information");
