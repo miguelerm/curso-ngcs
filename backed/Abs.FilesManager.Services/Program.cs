@@ -25,10 +25,10 @@ namespace Abs.FilesManager.Services
                 .CreateLogger();
 
             CreateWebHostBuilder(args)
-                //.ConfigureLogging(c =>
-                //{
-                //    c.AddSerilog(logger);
-                //})
+                .ConfigureLogging(c =>
+                {
+                    c.AddSerilog(logger);
+                })
                 .Build()
                 .Run();
         }

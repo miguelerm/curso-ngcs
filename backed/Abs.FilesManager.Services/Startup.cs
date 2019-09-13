@@ -15,33 +15,36 @@ namespace Abs.FilesManager.Services
 {
     public class Startup
     {
+        private readonly IConfiguration configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.Configure<FilesConfig>(Configuration.GetSection("Files"));
+            services.Configure<FilesConfig>(configuration.GetSection("Files"));
 
             services.AddTransient<IConsumeObserver, LoggingObserver>();
+
+            var hostConfig = configuration.GetSection("Bus");
+            var hostUrl = hostConfig["Host"];
 
             services.AddMassTransit(x => {
 
                 x.AddConsumer<PutFilesConsumer>();
                 x.AddConsumer<BookCreatedConsumer>();
                 x.AddConsumer<FileCreatedConsumer>();
-                x.AddRequestClient<IGetBookByIdRequest>(new Uri("rabbitmq://localhost/demos/books-manager"));
+                x.AddRequestClient<IGetBookByIdRequest>(new Uri(hostUrl + "/books-manager"));
 
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
-                    var hostConfig = provider.GetService<IConfiguration>().GetSection("Bus");
-                    var host = config.Host(new Uri(hostConfig["Host"]), h =>
+                    var host = config.Host(new Uri(hostUrl), h =>
                     {
                         h.Username(hostConfig["Username"]);
                         h.Password(hostConfig["Password"]);
@@ -75,10 +78,10 @@ namespace Abs.FilesManager.Services
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                //app.UseHsts();
+                app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseMvc();
 
             Console.WriteLine("Environment: " + env.EnvironmentName);

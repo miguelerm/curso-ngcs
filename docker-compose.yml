@@ -5,7 +5,7 @@ services:
   books:
     build: 
         context: backed/
-        dockerfile: Books.Dockerfile
+        dockerfile: Abs.BooksCatalog.Service/Dockerfile
     volumes:
       - ./data/database/:/app/database/
     environment:
@@ -17,7 +17,7 @@ services:
   files:
     build: 
         context: backed/
-        dockerfile: Files.Dockerfile
+        dockerfile: Abs.FilesManager.Services/Dockerfile
     volumes:
       - ./files.appsettings.json:/app/appsettings.json:ro
       - ./data/files/:/app/Files/

@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>b0035063-a3b9-494a-9267-7c44336ff800</UserSecretsId>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +21,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abs.Messages\Abs.Messages.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="database\empty.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

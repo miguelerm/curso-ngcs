@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  abs.bookscatalog.service:
+    image: ${DOCKER_REGISTRY-}absbookscatalogservice
+    build:
+      context: .
+      dockerfile: Abs.BooksCatalog.Service/Dockerfile
+
+  abs.filesmanager.services:
+    image: ${DOCKER_REGISTRY-}absfilesmanagerservices
+    build:
+      context: .
+      dockerfile: Abs.FilesManager.Services/Dockerfile
+
