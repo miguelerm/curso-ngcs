@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abs.Messages", "Abs.Message
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B6A795B6-5364-4D3B-99B7-4687F5C5EC18}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abs.Authentication.Service", "Abs.Authentication.Service\Abs.Authentication.Service.csproj", "{587737CB-3BD9-4ECF-9118-F15A468BCD31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{B6A795B6-5364-4D3B-99B7-4687F5C5EC18}.Release|x64.Build.0 = Release|Any CPU
 		{B6A795B6-5364-4D3B-99B7-4687F5C5EC18}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6A795B6-5364-4D3B-99B7-4687F5C5EC18}.Release|x86.Build.0 = Release|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Debug|x64.Build.0 = Debug|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Debug|x86.Build.0 = Debug|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Release|x64.ActiveCfg = Release|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Release|x64.Build.0 = Release|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Release|x86.ActiveCfg = Release|Any CPU
+		{587737CB-3BD9-4ECF-9118-F15A468BCD31}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
