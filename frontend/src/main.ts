@@ -9,4 +9,10 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+  .catch(err => {
+    if (err === 'user not authenticated') {
+      window.location.href = environment.sso;
+    } else {
+      console.error('error al iniciar la app: ', err);
+    }
+  });

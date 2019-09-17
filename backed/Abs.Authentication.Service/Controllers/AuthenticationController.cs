@@ -34,37 +34,44 @@ namespace Abs.Authentication.Service.Controllers
 
         [HttpGet("validate")]
         public async Task<IActionResult> ValidateAsync(
-            [FromQuery] string ticketAut, 
+            [FromQuery] string ticketAut,
             [FromServices] TicketAutenticacionClient ticketClient,
             [FromServices] UsuarioClient usuarioClient,
             [FromServices] AccesoClient accesoClient)
         {
-            var result = ticketClient.Usar(ticketAut);
+            //var result = ticketClient.Usar(ticketAut);
 
-            if (!result.Estado.Equals(EstadoRespuestaUsar.Ok))
-            {
-                return BadRequest(result);
-            }
+            //if (!result.Estado.Equals(EstadoRespuestaUsar.Ok))
+            //{
+            //    return BadRequest(result);
+            //}
 
-            var acceso = accesoClient.Obtener(result.Nit);
+            //var acceso = accesoClient.Obtener(result.Nit);
 
-            if (!acceso)
-            {
-                return BadRequest(new { result.Nit, acceso });
-            }
+            //if (!acceso)
+            //{
+            //    return BadRequest(new { result.Nit, acceso });
+            //}
 
-            var usuario = usuarioClient.Obtener(result.Nit);
+            //var usuario = usuarioClient.Obtener(result.Nit);
 
-            if (usuario == null || !usuario.Activo)
-            {
-                return BadRequest(new { result.Nit, usuario });
-            }
+            //if (usuario == null || !usuario.Activo)
+            //{
+            //    return BadRequest(new { result.Nit, usuario });
+            //}
+
+            //var claims = new List<Claim>
+            //{
+            //  new Claim(ClaimTypes.Name, usuario.Nit),
+            //  new Claim(ClaimTypes.GivenName, usuario.Nombre),
+            //  new Claim(ClaimTypes.Email, usuario.Correo)
+            //};
 
             var claims = new List<Claim>
             {
-              new Claim(ClaimTypes.Name, usuario.Nit),
-              new Claim(ClaimTypes.GivenName, usuario.Nombre),
-              new Claim(ClaimTypes.Email, usuario.Correo)
+              new Claim(ClaimTypes.Name, "2252438K"),
+              new Claim(ClaimTypes.GivenName, "Fernando Ruano"),
+              new Claim(ClaimTypes.Email, "ioch@minfin.gob.gt")
             };
 
             var identity = new ClaimsIdentity(claims, AuthScheme);

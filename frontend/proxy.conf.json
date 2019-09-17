@@ -8,5 +8,10 @@
     "target": "https://localhost:5003/",
     "secure": false,
     "logLevel": "debug"
+  },
+  "/api/authentication": {
+    "target": "https://localhost:5005/",
+    "secure": false,
+    "logLevel": "debug"
   }
 }

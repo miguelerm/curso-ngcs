@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -28,12 +31,17 @@ namespace Abs.Authentication.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Configuration["DataProtectionPath"]))
+                .SetApplicationName("ABS");
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
                     options.Cookie.HttpOnly = true;
-                    options.Cookie.Name = "sso_auth";
+                    options.Cookie.Name = "SSO_AUTH";
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
                 });
 
             // SSO Dependencies:

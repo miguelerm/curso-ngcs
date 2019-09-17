@@ -29,7 +29,7 @@ namespace Abs.BooksCatalog.Service.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            logger.LogDebug("Getting all books");
+            logger.LogDebug("Getting all books {user}", User.Identity.Name);
             return await context.Books.Include(x => x.Authors).Include(x => x.Covers).ToListAsync();
         }
 

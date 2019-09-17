@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
+using System.Threading.Tasks;
 using Abs.BooksCatalog.Service.Clients;
 using Abs.BooksCatalog.Service.Consumers;
 using Abs.BooksCatalog.Service.Data;
 using Abs.FilesManager.Services;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,11 +36,29 @@ namespace Abs.BooksCatalog.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(configuration["DataProtectionPath"]))
+                .SetApplicationName("ABS");
+
+            services
+                .AddMvc(c => c.Filters.Add(new AuthorizeFilter()))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddDbContext<BooksCatalogContext>(options => {
                 //options.UseInMemoryDatabase("BooksDb");
                 options.UseSqlite(configuration.GetConnectionString("Default"));
             });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.Name = "SSO_AUTH";
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                    options.Events.OnRedirectToLogin = (ctx) => {
+                        ctx.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                });
 
             services.AddHttpClient();
             services.AddTransient<FilesClient>();
@@ -80,6 +104,7 @@ namespace Abs.BooksCatalog.Service
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
 

@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  sso: 'https://ssocapa.minfin.gob.gt/'
 };

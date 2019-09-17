@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  sso: 'https://ssocapa.minfin.gob.gt/Portal/Default/Credenciales/Login'
 };
 
 /*
