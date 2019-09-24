@@ -34,10 +34,12 @@ namespace Abs.Authentication.Service.Controllers
 
         [HttpGet("validate")]
         public async Task<IActionResult> ValidateAsync(
-            [FromQuery] string ticketAut,
-            [FromServices] TicketAutenticacionClient ticketClient,
-            [FromServices] UsuarioClient usuarioClient,
-            [FromServices] AccesoClient accesoClient)
+            [FromQuery] string name
+            //[FromQuery] string ticketAut,
+            //[FromServices] TicketAutenticacionClient ticketClient,
+            //[FromServices] UsuarioClient usuarioClient,
+            //[FromServices] AccesoClient accesoClient
+        )
         {
             //var result = ticketClient.Usar(ticketAut);
 
@@ -67,12 +69,12 @@ namespace Abs.Authentication.Service.Controllers
             //  new Claim(ClaimTypes.Email, usuario.Correo)
             //};
 
-            var claims = new List<Claim>
+            if (string.IsNullOrWhiteSpace(name))
             {
-              new Claim(ClaimTypes.Name, "2252438K"),
-              new Claim(ClaimTypes.GivenName, "Fernando Ruano"),
-              new Claim(ClaimTypes.Email, "ioch@minfin.gob.gt")
-            };
+                return BadRequest(new { name });
+            }
+
+            var claims = GetTestUser(name);
 
             var identity = new ClaimsIdentity(claims, AuthScheme);
             var properties = new AuthenticationProperties();
@@ -90,6 +92,23 @@ namespace Abs.Authentication.Service.Controllers
         {
             await HttpContext.SignOutAsync(AuthScheme);
             return Redirect("/");
+        }
+
+        private static IEnumerable<Claim> GetTestUser(string token)
+        {
+            var givennames = new[] { "Antonio", "Mario", "Juan" };
+            var surnames = new[] { "Estrada", "Gutierrez", "Garcia" };
+
+            var random = new Random();
+            var i = random.Next(0, givennames.Length - 1);
+            var j = random.Next(0, surnames.Length - 1);
+            var name = givennames[i] + " " + surnames[j];
+            var email = name.ToLower().Replace(" ", ".") + "@email.com";
+            return new [] {
+                new Claim(ClaimTypes.Name, token),
+                new Claim(ClaimTypes.GivenName, name),
+                new Claim(ClaimTypes.Email, email)
+            };
         }
     }
 }

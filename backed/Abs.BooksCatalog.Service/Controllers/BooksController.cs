@@ -27,17 +27,10 @@ namespace Abs.BooksCatalog.Service.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks([FromQuery] string criteria = null)
         {
             logger.LogDebug("Getting all books {user}", User.Identity.Name);
-            return await context.Books.Include(x => x.Authors).Include(x => x.Covers).ToListAsync();
-        }
-
-        // GET: api/Books
-        [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Book>>> SearchBooks([FromQuery] string criteria)
-        {
-            var lowerCriteria = criteria?.ToLower();
+            var lowerCriteria = criteria?.ToLower() ?? "";
             return await context.Books
                 .Include(x => x.Authors)
                 .Include(x => x.Covers)
