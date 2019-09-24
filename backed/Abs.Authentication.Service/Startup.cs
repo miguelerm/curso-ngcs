@@ -32,7 +32,6 @@ namespace Abs.Authentication.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo(Configuration["DataProtectionPath"]))
                 .SetApplicationName("ABS");
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

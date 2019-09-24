@@ -37,7 +37,6 @@ namespace Abs.BooksCatalog.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo(configuration["DataProtectionPath"]))
                 .SetApplicationName("ABS");
 
             services

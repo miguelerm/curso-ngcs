@@ -33,6 +33,18 @@ namespace Abs.BooksCatalog.Service.Controllers
             return await context.Books.Include(x => x.Authors).Include(x => x.Covers).ToListAsync();
         }
 
+        // GET: api/Books
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Book>>> SearchBooks([FromQuery] string criteria)
+        {
+            var lowerCriteria = criteria?.ToLower();
+            return await context.Books
+                .Include(x => x.Authors)
+                .Include(x => x.Covers)
+                .Where(x => x.Title.ToLower().Contains(lowerCriteria))
+                .ToListAsync();
+        }
+
         // GET: api/Books/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
@@ -101,7 +113,11 @@ namespace Abs.BooksCatalog.Service.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBook(int id)
         {
-            var book = await context.Books.FindAsync(id);
+            var book = await context.Books
+                .Include(x => x.Authors)
+                .Include(x => x.Covers)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (book == null)
             {
                 return NotFound();
