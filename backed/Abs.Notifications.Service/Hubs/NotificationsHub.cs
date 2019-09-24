@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Abs.Notifications.Service.Hubs
 {
-    //[Authorize]
+    [Authorize]
     public class NotificationsHub: Hub
     {
         private readonly ILogger<NotificationsHub> logger;
@@ -18,6 +18,7 @@ namespace Abs.Notifications.Service.Hubs
 
         public Task Message(object data)
         {
+            logger.LogDebug("User: {@user}", Context.User);
             return Clients.Others.SendAsync("message", data);
         }
 
