@@ -13,5 +13,11 @@
     "target": "https://localhost:5005/",
     "secure": false,
     "logLevel": "debug"
+  },
+  "/notifications": {
+    "target": "https://localhost:5007/",
+    "secure": false,
+    "logLevel": "debug",
+    "ws": true
   }
 }

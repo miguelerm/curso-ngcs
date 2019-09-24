@@ -19,7 +19,9 @@ export class AuthService {
           this.user = result;
           resolve(result);
         } else {
-          reject('user not authenticated');
+          this.user = result;
+          resolve(result);
+          //reject('user not authenticated');
         }
       };
 
@@ -36,8 +38,8 @@ export class AuthService {
 
 export interface IAuthentication {
   isAuthenticated: boolean;
-  name: string;
-  claims: {
+  name?: string;
+  claims?: {
     name: string;
     givenname: string;
     emailaddress: string;

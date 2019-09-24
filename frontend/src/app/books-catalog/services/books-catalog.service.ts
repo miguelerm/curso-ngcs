@@ -10,8 +10,9 @@ export class BooksCatalogService {
 
   constructor(private http: HttpClient) { }
 
-  public get(): Observable<IBookSummary[]> {
-    return this.http.get<IBookSummary[]>('/api/books');
+  public get(criteria: string = null): Observable<IBookSummary[]> {
+    const params = criteria && { criteria } || {};
+    return this.http.get<IBookSummary[]>('/api/books', { params });
   }
 
   public single(id: number): Observable<IBookSummary> {

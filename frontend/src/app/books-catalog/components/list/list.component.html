@@ -1,26 +1,50 @@
 <abs-catalog-page [title]="'Libros'">
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let book of books | async">
-        <td>{{ book.id }}</td>
-        <td>{{ book.title}}</td>
-        <td>
-          <div class="btn-group btn-group-sm">
-            <a [routerLink]="['./edit', book.id]" class="btn btn-primary"><i class="fa fa-edit"></i></a>
-            <a [routerLink]="['./remove', book.id]" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+  <div class="row">
+      <form [formGroup]="form">
+          <div class="form-group">
+            <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="filtro:"
+                  formControlName="criteria"
+                />
+                <button
+                  type="button"
+                  class="input-group-append btn btn-secondary"
+                  (click)="refresh.next(null)"
+                >Refresh</button>
+            </div>
+
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </form>
+  </div>
+  <div class="row">
+      <table class="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Title</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let book of books | async">
+              <td>{{ book.id }}</td>
+              <td>{{ book.title}}</td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <a [routerLink]="['./edit', book.id]" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                  <a [routerLink]="['./remove', book.id]" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+
+
 
   <router-outlet></router-outlet>
 </abs-catalog-page>
