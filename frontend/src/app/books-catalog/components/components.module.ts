@@ -17,6 +17,7 @@ import { RouterModule } from "@angular/router";
 import { CreateComponent } from "./create/create.component";
 import { UpdateComponent } from "./update/update.component";
 import { CoversEditorComponent } from './covers-editor/covers-editor.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CoversEditorComponent } from './covers-editor/covers-editor.component';
     NgbDatepickerModule,
     NgbModalModule,
     LayoutModule,
-    RouterModule
+    RouterModule,
+    SharedModule,
   ],
   providers: [
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }

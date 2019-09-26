@@ -7,6 +7,7 @@ using Abs.BooksCatalog.Service.Data;
 using Microsoft.Extensions.Logging;
 using MassTransit;
 using Abs.Messages.BooksCatalog.Events;
+using Abs.BooksCatalog.Service.Repositories;
 
 namespace Abs.BooksCatalog.Service.Controllers
 {
@@ -15,14 +16,16 @@ namespace Abs.BooksCatalog.Service.Controllers
     public class BooksController : ControllerBase
     {
         private readonly BooksCatalogContext context;
+        private readonly IBooksRepository booksRepository;
         private readonly ILogger<BooksController> logger;
         private readonly IBus bus;
 
-        public BooksController(BooksCatalogContext context, IBus bus, ILogger<BooksController> logger)
+        public BooksController(BooksCatalogContext context, IBooksRepository booksRepository, IBus bus, ILogger<BooksController> logger)
         {
             this.logger = logger;
             this.bus = bus;
             this.context = context;
+            this.booksRepository = booksRepository;
         }
 
         // GET: api/Books
@@ -30,12 +33,8 @@ namespace Abs.BooksCatalog.Service.Controllers
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks([FromQuery] string criteria = null)
         {
             logger.LogDebug("Getting all books {user}", User.Identity.Name);
-            var lowerCriteria = criteria?.ToLower() ?? "";
-            return await context.Books
-                .Include(x => x.Authors)
-                .Include(x => x.Covers)
-                .Where(x => x.Title.ToLower().Contains(lowerCriteria))
-                .ToListAsync();
+            var books = await booksRepository.GetAllAsync(criteria);
+            return Ok(books);
         }
 
         // GET: api/Books/5

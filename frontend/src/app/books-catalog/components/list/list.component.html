@@ -1,4 +1,4 @@
-<abs-catalog-page [title]="'Libros'">
+<abs-catalog-page [title]="'Libros'" [createPermissions]="['create-books']" >
 
   <div class="row">
       <form [formGroup]="form">
@@ -35,7 +35,10 @@
               <td>{{ book.title}}</td>
               <td>
                 <div class="btn-group btn-group-sm">
-                  <a [routerLink]="['./edit', book.id]" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                  <a
+                    [routerLink]="['./edit', book.id]"
+                    *absRequiresPermission="'edit-books'"
+                    class="btn btn-primary"><i class="fa fa-edit"></i></a>
                   <a [routerLink]="['./remove', book.id]" class="btn btn-danger"><i class="fa fa-remove"></i></a>
                 </div>
               </td>

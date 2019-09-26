@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Minfin.SSO.Api.Models.TicketAutenticacion;
 using Minfin.SSO.WebApi.Client.Clients;
 
@@ -18,6 +19,12 @@ namespace Abs.Authentication.Service.Controllers
     {
         private const string AuthScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         private const string ClaimsNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/";
+        private readonly ILogger<AuthenticationController> logger;
+
+        public AuthenticationController(ILogger<AuthenticationController> logger)
+        {
+            this.logger = logger;
+        }
 
         [HttpGet("")]
         [HttpGet("/")]
@@ -92,6 +99,14 @@ namespace Abs.Authentication.Service.Controllers
         {
             await HttpContext.SignOutAsync(AuthScheme);
             return Redirect("/");
+        }
+
+        [HttpGet("has-access")]
+        public async Task<IActionResult> HasAccess([FromQuery] string[] permissions)
+        {
+            logger.LogDebug("checking permissions for {user} and {@permissions}", User.Identity.Name, permissions);
+            await Task.Delay(2000);
+            return Ok(true);
         }
 
         private static IEnumerable<Claim> GetTestUser(string token)

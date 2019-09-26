@@ -8,6 +8,7 @@ import { CatalogPageComponent } from './catalog-page/catalog-page.component';
 import { CreatePageComponent } from './create-page/create-page.component';
 import { FormsModule } from '@angular/forms';
 import { EditModalComponent } from './edit-modal/edit-modal.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -18,6 +19,7 @@ import { EditModalComponent } from './edit-modal/edit-modal.component';
     RouterModule,
     NgbDropdownModule,
     FormsModule,
+    SharedModule,
   ],
   exports: [MenuComponent, PageComponent, CatalogPageComponent, CreatePageComponent, EditModalComponent]
 })

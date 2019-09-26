@@ -7,8 +7,22 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
 
   public user: IAuthentication;
+  public permissions: string[] = [];
 
   constructor(private readonly http: HttpClient) { }
+
+  public hasPermission(permission: string): boolean {
+    return this.permissions.indexOf(permission) >= 0;
+  }
+
+  public hasAnyPermission(permissions: string[]): boolean {
+    for (const permission of permissions) {
+      if (this.hasPermission(permission)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public load(): Promise<any> {
 
@@ -17,6 +31,8 @@ export class AuthService {
       const success = (result: IAuthentication) => {
         if (result.isAuthenticated) {
           this.user = result;
+          this.permissions = ['edit-book', 'create-book'];
+
           resolve(result);
         } else {
           this.user = result;

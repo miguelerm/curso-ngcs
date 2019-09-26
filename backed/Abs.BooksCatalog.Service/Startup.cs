@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Abs.BooksCatalog.Service.Clients;
 using Abs.BooksCatalog.Service.Consumers;
 using Abs.BooksCatalog.Service.Data;
+using Abs.BooksCatalog.Service.Repositories;
 using Abs.FilesManager.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -84,6 +85,7 @@ namespace Abs.BooksCatalog.Service
 
             });
 
+            services.AddTransient<IBooksRepository, BooksRepository>();
             services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, BusService>();
             services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, MigrationsService>();
         }

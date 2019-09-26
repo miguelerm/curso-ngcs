@@ -10,4 +10,7 @@ export class CatalogPageComponent {
   @Input()
   public title: string;
 
+  @Input()
+  public createPermissions: string[];
+
 }
