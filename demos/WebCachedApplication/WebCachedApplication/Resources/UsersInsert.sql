@@ -1,0 +1,24 @@
+INSERT INTO Users 
+(
+    FirstName,
+    LastName,
+    FullName,
+    UserName,
+    Email,
+    Avatar,
+    CartId,
+    SSN,
+    Gender
+)
+VALUES
+(
+    @FirstName,
+    @LastName,
+    @FullName,
+    @UserName,
+    @Email,
+    @Avatar,
+    @CartId,
+    @SSN,
+    @Gender
+)

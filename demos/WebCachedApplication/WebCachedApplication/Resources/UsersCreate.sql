@@ -1,0 +1,12 @@
+﻿CREATE TABLE Users (
+    Id INTEGER PRIMARY KEY,
+    FirstName TEXT NOT NULL,
+    LastName TEXT NOT NULL,
+    FullName TEXT NOT NULL,
+    UserName TEXT NOT NULL,
+    Email TEXT NOT NULL,
+    Avatar TEXT NOT NULL,
+    CartId TEXT NOT NULL,
+    SSN TEXT NOT NULL,
+    Gender TEXT NOT NULL
+)
