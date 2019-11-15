@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Newtonsoft.Json.Linq;
@@ -33,8 +36,24 @@ namespace Client
             var accessToken = tokenResponse.AccessToken;
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "borbotones.jpg");
 
-            await UploadFile(filePath, accessToken);
+            Console.WriteLine("Uploading file...");
+            
+            var result = await UploadFile(filePath, accessToken);
 
+            if (result == null)
+            {
+                return;
+            }
+            
+            Console.WriteLine("File uploaded, press enter to download");
+            Console.ReadLine();
+
+            Console.WriteLine("Downloading file...");
+            var fileId = result.FileId;
+            var finalDirectory = Path.GetTempPath();
+            await DownloadFile(fileId, finalDirectory, accessToken);
+
+            Console.WriteLine("File {0} saved on {1}", fileId, finalDirectory);
             Console.ReadLine();
         }
 
@@ -65,7 +84,7 @@ namespace Client
             return tokenResponse;
         }
 
-        private static async Task UploadFile(string filePath, string accessToken)
+        private static async Task<FileUploadResult> UploadFile(string filePath, string accessToken)
         {
             var fileName = Path.GetFileName(filePath);
             // call api
@@ -80,20 +99,66 @@ namespace Client
                 {new StringContent("tu proyecto"), "Project"},
                 {new StringContent("su módulo"), "Module"},
                 {new StringContent("nuestra referencia"), "Reference"},
-                {new StreamContent(File.OpenRead(filePath)), "File", fileName}
+                {
+                    new StreamContent(File.OpenRead(filePath)) 
+                    { 
+                        Headers = 
+                        { 
+                            ContentType = MediaTypeHeaderValue.Parse("image/jpeg") 
+                        } 
+                    }, 
+                    "File", 
+                    fileName
+                }
             };
 
             using var response = await apiClient.PostAsync("/api/files", content);
             if (!response.IsSuccessStatusCode)
             {
-                var t = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Api Error {0}", response.StatusCode);
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Api Error {0}: {1}", response.StatusCode, errorMessage);
+                return null;
             }
             else
             {
-                var responseString = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Api Response {0}", responseString);
+                var result = await response.Content.ReadAsAsync<FileUploadResult>();
+                Console.WriteLine("Api Response File Id: {0}", result.FileId);
+                return result;
             }
         }
+
+        private static async Task DownloadFile(Guid fileId, string destinationPath, string accessToken)
+        {
+            var apiClient = new HttpClient
+            {
+                BaseAddress = new Uri(filesApiServer)
+            };
+            apiClient.SetBearerToken(accessToken);
+
+            using var response = await apiClient.GetAsync($"/api/files/{fileId}");
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Api Error {0}: {1}", response.StatusCode, errorMessage);
+            }
+            else
+            {
+                var contentDisposition = response.Content.Headers.ContentDisposition;
+                var originalFileName = contentDisposition.FileName;
+                var extension = Path.GetExtension(originalFileName);
+
+                Console.WriteLine("Original file name: {0}", originalFileName);
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                using var file = File.Create(Path.Combine(destinationPath, $"{fileId}{extension}"));
+                await stream.CopyToAsync(file);
+            }
+        }
+
+        public class FileUploadResult
+        {
+            public Guid FileId { get; set; }
+        }
+
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace Api.Models
+﻿using System;
+
+namespace Api.Models
 {
     public class UploadFileResponse
     {
-        public string FileId { get; set; }
+        public Guid FileId { get; set; }
     }
 }
